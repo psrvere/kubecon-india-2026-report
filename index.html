@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trip Report — KubeCon India 2026</title>
+<base target="_blank">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242836;
+    --border: #2e3345;
+    --text: #e2e4ea;
+    --text-dim: #8b90a0;
+    --accent: #4f8cff;
+    --accent-dim: #2d5aa0;
+    --green: #34d399;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --purple: #a78bfa;
+    --cyan: #22d3ee;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  .app { display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 280px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .sidebar-header {
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-header h1 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+
+  .sidebar-header .subtitle {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .sidebar-header .dates {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: var(--surface2);
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  .nav-section { padding: 8px 0; }
+
+  .nav-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    padding: 12px 20px 6px;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: var(--text-dim);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .nav-link:hover {
+    color: var(--text);
+    background: var(--surface2);
+    border-left-color: var(--accent);
+  }
+
+  .nav-link.active {
+    color: var(--accent);
+    background: var(--surface2);
+    border-left-color: var(--accent);
+  }
+
+  /* MAIN */
+  .main {
+    margin-left: 280px;
+    flex: 1;
+    max-width: 820px;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    padding: 0;
+    scrollbar-width: none;
+  }
+
+  .main::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* SECTIONS */
+  .section {
+    scroll-snap-align: start;
+    min-height: 100vh;
+    padding: 48px 56px 120px;
+    margin-bottom: 0;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  h2 .tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-left: 10px;
+    vertical-align: middle;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-redhat { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+  .tag-work { background: rgba(79, 140, 255, 0.15); color: var(--accent); }
+  .tag-booth { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+  .tag-session { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+
+  .section-subtitle {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 32px 0 12px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  strong { color: #fff; }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover { text-decoration: underline; }
+
+  /* NARRATIVE PULL-STATS */
+  .narrative-block {
+    margin: 32px 0;
+    overflow: hidden;
+  }
+
+  .narrative-block::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  .pull-stat {
+    float: left;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1;
+    margin: 0 20px 8px 0;
+    color: #fff;
+  }
+
+  .pull-stat.red { color: var(--red); }
+  .pull-stat.green { color: var(--green); }
+
+  .narrative-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  .ref {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* ACTION ITEMS */
+  .action-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+  }
+
+  .action-item .action-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .action-item p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  /* CODE */
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--surface2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--cyan);
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+
+  .callout-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+
+  .callout p {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  /* STAT INLINE */
+  .stat-inline {
+    display: inline-block;
+    background: var(--surface2);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* QUICK NOTES */
+  .quick-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 12px 0;
+  }
+
+  .quick-note h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .quick-note p {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  /* TBC */
+  .tbc {
+    font-size: 13px;
+    color: var(--orange);
+    font-style: italic;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 32px 24px 80px; }
+    .highlight-grid { grid-template-columns: 1fr; }
+    .highlight-grid-3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <h1>KubeCon India 2026</h1>
+    <div class="subtitle">Trip Report — Prateek Rathore, OpenShift Builds</div>
+    <div class="dates">June 18–19 · Mumbai</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Overview</div>
+    <a class="nav-link" target="_self" href="#summary">What Matters for Red Hat</a>
+  </div>
+
+
+  <div class="nav-section">
+    <div class="nav-section-title">Booth</div>
+    <a class="nav-link" target="_self" href="#booth">Shipwright at the Pavilion</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Sessions</div>
+    <a class="nav-link" target="_self" href="#chainguard">Chainguard</a>
+    <a class="nav-link" target="_self" href="#kimchi">CAST AI / Kimchi</a>
+    <a class="nav-link" target="_self" href="#otel">OTel + Observability Panel</a>
+    <a class="nav-link" target="_self" href="#buildpacks">Buildpacks & Jib</a>
+    <a class="nav-link" target="_self" href="#other">Other Sessions</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ====== SUMMARY ====== -->
+<div class="section" id="summary">
+  <img src="team.jpeg" alt="Red Hat team at KubeCon India 2026" style="width:100%; border-radius:10px; margin-bottom:24px; border:1px solid var(--border);">
+
+  <h2>What Matters for Red Hat <span class="tag tag-redhat">Summary</span></h2>
+
+  <div class="narrative-block">
+    <div class="pull-stat red">−7d</div>
+    <p><strong>Mean Time To Exploitation is now negative seven days.</strong> By the time a CVE is publicly disclosed, it has already been exploited. Chainguard's Dan Lorenc drove this home in his keynote — AI generates ~50x more code per sprint, and human reviewers cannot keep up with the patching load.</p>
+    <p>At the booth, <a href="https://www.linkedin.com/in/rahulduvedi/">Rahul Duvedi</a> from Chainguard spoke about <a href="https://github.com/driftlessaf/go-driftlessaf">DriftlessAF</a> — the agentic framework behind their Factory 2.0 — bots that continuously reconcile code to a zero-CVE state, merging <strong>600+ PRs daily</strong> with zero human involvement. In their biggest month, they remediated <strong>2,960 unique CVEs</strong>. Directly relevant to <strong>Project Lightwell</strong>.</p>
+    <p class="ref"><a href="https://www.chainguard.dev/unchained/driftlessaf-introducing-chainguard-factory-2-0">DriftlessAF Blog →</a> · <a href="https://github.com/driftlessaf/go-driftlessaf">GitHub →</a></p>
+  </div>
+
+  <hr class="narrative-divider">
+
+  <div class="narrative-block">
+    <div class="pull-stat green">90%</div>
+    <p><strong>CAST AI cut their monthly AI spend from $200k to $20k</strong> — a 90% cost reduction — by routing 91.5% of agent work to open-source models. Their tool <a href="https://github.com/getkimchi/kimchi">Kimchi</a> assigns roles to models: a planner, a builder, a reviewer, an explorer. Frontier models handle the 7.7% that needs them; everything else runs at ~14x lower cost per token.</p>
+    <p>DevRel <a href="https://www.linkedin.com/in/kunaldaskd/">Kunal Das</a> showed me the live internal dashboard at the booth: <strong>90% of CAST AI's engineers have adopted Kimchi.</strong> This is real company-wide uptake, not a pilot.</p>
+    <p class="ref"><a href="https://docs.kimchi.dev">Kimchi Docs →</a> · <a href="https://github.com/getkimchi/kimchi">GitHub →</a></p>
+  </div>
+
+  <hr class="narrative-divider">
+
+  <div class="narrative-block">
+    <div class="pull-stat" style="color: var(--accent);">80</div>
+    <p><strong>80 visitors in two hours at the Shipwright booth.</strong> We hosted the Shipwright table at the CNCF project pavilion on Friday (11:30 AM – 1:30 PM). Most visitors asked the same question: "What is Shipwright?" — which we answered by walking through the build tool evolution and demoing the Buildah strategy live. We logged <strong>25 badge contacts</strong> from BlackRock, JP Morgan Chase, Nutanix, HSBC, Eli Lilly, and more.</p>
+    <p class="ref"><a href="https://psrvere.github.io/kubecon-shipwright">Booth Runbook →</a></p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<hr class="divider">
+
+<!-- ====== BOOTH ====== -->
+<div class="section" id="booth">
+  <h2>Shipwright at the CNCF Pavilion <span class="tag tag-booth">Booth</span></h2>
+  <p class="section-subtitle">Friday, 11:30 AM to 1:30 PM · CNCF Project Pavilion</p>
+
+  <p>Sayan and I hosted the table using a <a href="https://psrvere.github.io/kubecon-shipwright">booth runbook</a> I had prepared. Around <strong>80 visitors</strong> came through in two hours. We logged <strong>25 badge contacts</strong> and ran a live Buildah strategy demo. The pitch was structured: why the build tool landscape is fragmented, how Shipwright unifies it, and a demo to bring it home.</p>
+
+  <h3>#1 question: "What is Shipwright?"</h3>
+
+  <p>Most visitors knew Docker, many had heard of Kaniko or Buildpacks, but few knew a project unified all of them. The pitch that worked: start with the evolution. Docker had a daemon and root problem, so Kaniko and Buildah appeared. Dockerfiles were too rigid, so Buildpacks and ko appeared. Then Shipwright came along to unify all of them under one Kubernetes-native API.</p>
+
+  <h3>The demo that clicked</h3>
+
+  <p>I showed how a single Build YAML decouples <em>what</em> to build from <em>how</em> to build it. Swap the strategy reference (Buildah, Buildpacks, ko) and the same source builds with a completely different tool. That decoupling was the "aha" moment for most visitors.</p>
+
+  <p>Having attended the Buildpacks and Jib sessions earlier made these conversations richer. When someone already understood <code>pack rebase</code> or Jib's layered model: <em>"Shipwright doesn't replace those tools. It gives your platform team a single API to offer all of them."</em></p>
+
+  <h3>Who came by</h3>
+
+  <p>BlackRock, JP Morgan Chase, Nutanix, HSBC, Eli Lilly, MassMutual, SLB, Carl Zeiss, CoverGo, and others, a strong mix of financial services, enterprise, and infrastructure companies. Several visitors expressed interest in contributing to Shipwright. We should follow up and onboard a couple of new contributors from this list.</p>
+
+  <!-- PHOTO PLACEHOLDER -->
+  <div style="background:var(--surface2); border:1px dashed var(--border); border-radius:10px; padding:48px 20px; text-align:center; margin-top:24px; color:var(--text-dim); font-size:14px;">
+    📷 Photo: Sayan &amp; Prateek at the Shipwright booth, coming soon
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== SESSION DEEP DIVES ====== -->
+<div class="section" id="chainguard">
+  <h2>Chainguard: "Open Source at Machine Speed" <span class="tag tag-session">Session</span></h2>
+  <p class="section-subtitle">Dan Lorenc, CEO &amp; Founder, Chainguard</p>
+
+  <div class="callout">
+    <div class="callout-title">The headline</div>
+    <p><strong>Mean Time To Exploitation is now negative seven days.</strong> By the time a CVE is publicly disclosed, it has already been exploited.</p>
+  </div>
+
+  <p>Lorenc painted a bleak picture: every step from report to patch to downstream fix has a human in the way, and AI is flooding the pipeline with roughly 50x more code per sprint. The attack surface is growing faster than anyone can patch it. What really got the room's attention was vulnerability chaining: low-severity CVEs combining into a 9.8 Critical, with attackers finding them before maintainers do.</p>
+
+  <p>During Q&amp;A, someone asked whether cheaper models change the economics. Lorenc's answer: no. Discovery is harder and costlier than fixing, regardless of what model you use.</p>
+
+  <h3>How Chainguard uses AI agents internally</h3>
+
+  <p>The keynote laid out the crisis. My conversation with <a href="https://www.linkedin.com/in/rahulduvedi/">Rahul Duvedi</a> at the booth filled in how Chainguard is actually solving it. I was curious about how they use Claude Code and agentic automation internally, and it runs deeper than I expected.</p>
+
+  <p>Their framework <a href="https://github.com/driftlessaf/go-driftlessaf">DriftlessAF</a> powers what they call Factory 2.0: reconciler bots that continuously push code toward a zero-CVE state, processing <strong>600+ PRs daily</strong>. In their biggest month they remediated <strong>2,960 unique CVEs</strong>.</p>
+
+  <p>They also built <a href="https://www.chainguard.dev/agent-skills">Chainguard Agent Skills</a>, a hardened catalog of 1,000+ agent skills with a proper registry namespace, versioning, pinning, and audit trails.</p>
+
+
+</div>
+
+<div class="section" id="kimchi">
+  <h2>Cut the Bill, Not the Brains: CAST AI &amp; Kimchi <span class="tag tag-session">Session</span></h2>
+  <p class="section-subtitle">Matas Kaminskas, CAST AI / Kimchi</p>
+
+  <div class="callout">
+    <div class="callout-title">The headline</div>
+    <p><strong>Open-source models are good enough.</strong> CAST AI routes 91.5% of agent work to them and 90% of their engineers adopted it willingly.</p>
+  </div>
+
+  <p>Kaminskas's thesis: <strong>the harness matters more than the model.</strong> CAST AI built <a href="https://github.com/getkimchi/kimchi">Kimchi</a>, an open-source harness that routes work across models by role. Frontier models handle the 7.7% of work that needs them. Open-source models handle the other 91.5% at roughly 14x lower cost per token.</p>
+
+  <h3>The secret sauce: codified discipline</h3>
+
+  <p>Their philosophy is that every time an agent makes a mistake, you codify it as a rule so it never happens again. Conventions go into <code>AGENTS.md</code>. Destructive commands get gated by hooks. Long tasks get split into planner and executor. The harness gets smarter with every failure.</p>
+
+  <h3>The proof: live numbers from inside CAST AI</h3>
+
+  <p>DevRel <a href="https://www.linkedin.com/in/kunaldaskd/">Kunal Das</a> showed me the live internal dashboard. <strong>90% of CAST AI's engineers have adopted Kimchi</strong>, and their monthly AI spend dropped from <strong>$200k to $20k</strong>. Their infrastructure runs on vLLM serving across B200 × 8 GPUs with OTLP tracing built in.</p>
+</div>
+
+<div class="section" id="otel">
+  <h2>Observability for the AI Era <span class="tag tag-session">Session</span></h2>
+  <p class="section-subtitle">OpenTelemetry + OpenLIT (Grafana) &amp; Observability 2.0 Panel (Intuit, Atlassian, Cloudera)</p>
+
+  <div class="callout">
+    <div class="callout-title">The headline</div>
+    <p><strong>Agent quality is an observability problem.</strong> Capture the right spans and you can build evals on standard OTel signals rather than bespoke tooling.</p>
+  </div>
+
+  <p>OTel shipped GenAI semantic conventions (v1.40.0) that cover model spans, agent spans, metrics, and events. Anthropic, Azure, Bedrock, and OpenAI are all supported, and so is MCP. Getting started is easy: a zero-code <code>opentelemetry-instrument</code> call, or OpenLIT's one-liner <code>openlit.init()</code>. For Go and Rust, OBI does it at the kernel level with eBPF, no code changes needed.</p>
+
+  <p>The panel drove home a related point: most developers resist adding observability because it feels like extra work. A platform leader's job is to make it so easy they don't even notice. If it's virtually free, the resistance disappears.</p>
+</div>
+
+<div class="section" id="buildpacks">
+  <h2>The Patching Waterfall: Buildpacks, Jib, and the O(1) Future <span class="tag tag-session">Session</span></h2>
+  <p class="section-subtitle">Sai Bharadwaj Avvari &amp; Joe Kutner, Salesforce (Joe is ex-Heroku, CNB co-founder)</p>
+
+  <div class="callout">
+    <div class="callout-title">The headline</div>
+    <p><strong>87% of production container images</strong> have at least one High or Critical vulnerability. But only <strong>15%</strong> of those are in packages actually loaded at runtime. The other 85% is bloat noise.</p>
+  </div>
+
+  <p>Enterprises tend to fall into one of two traps. <strong>Hyper-Bloat:</strong> one global base image with everything baked in, 10+ GB containers, massive attack footprint. Or <strong>Fragmentation:</strong> developers adding their own libraries inside raw Dockerfiles, hundreds of unpatched configurations in production that nobody can audit.</p>
+
+  <h3>The fix: "Reduce, Reuse, Rebase"</h3>
+
+  <p>Cloud Native Buildpacks strictly separate image layers. When an OS-level CVE lands, you swap the OS layer. The app and runtime layers stay untouched:</p>
+
+<pre><code>app   (4a090ac)      unchanged
+jdk   (738fafa)      unchanged
+OS    (8e3e01b2)  →  OS (679b84b)   [only this layer changes]</code></pre>
+
+  <p>This turns patching from <strong>O(N) to O(1).</strong> Today, one critical CVE across 1,000 applications means 1,000 full rebuilds, hours to days of CI time. With Buildpacks it is one stack update via <code>pack rebase</code>, done in minutes. <em>"Stop rebuilding applications to patch infrastructure. Update once, propagate everywhere."</em></p>
+
+  <h3>Jib: same philosophy for Java</h3>
+
+  <p><strong>Jib</strong> builds OCI images for Spring Boot without a Dockerfile. Layered, daemonless, and incremental rebuilds touch only the changed class. Different tool, same principle: strict layer separation makes patching surgical.</p>
+
+</div>
+
+<div class="section" id="other">
+  <h2>Other Sessions <span class="tag tag-session">Session</span></h2>
+
+  <h3>IBM: Agentic Systems with Quarkus</h3>
+  <p>IBM presented a clean taxonomy for how to think about agent orchestration: sequence, loop, parallelization, and conditional routing. Framework-agnostic and useful as a mental model for anyone building multi-agent systems.</p>
+
+  <h3>NVIDIA: DGX Spark and Dynamic Resource Allocation</h3>
+  <p><strong>DRA is GA in Kubernetes 1.34.</strong> Instead of counting GPUs with <code>nvidia.com/gpu: 1</code>, you now describe what you need. The model follows the CSI storage stack: DeviceClass, ResourceSlice, ResourceClaim. A much more flexible way to schedule GPU workloads.</p>
+
+  <h3>Harbor + Velero: AI Model Management (Broadcom)</h3>
+  <p>Harbor 2.13 works as an OCI-native model registry. One registry for containers, Helm charts, and AI models. The key insight: the inference image never changes, only the OCI tag does. Swap the model without rebuilding the serving container.</p>
+</div>
+
+</main>
+</div>
+
+<!-- SIDEBAR ACTIVE STATE -->
+<script>
+const links = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('.section');
+
+const mainEl = document.querySelector('.main');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const id = entry.target.id;
+      const active = document.querySelector(`.nav-link[href="#${id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { root: mainEl, rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// Sidebar click scrolls smoothly within main container
+links.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const id = link.getAttribute('href').slice(1);
+    history.replaceState(null, '', '#' + id);
+    const target = document.getElementById(id);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Update URL hash on scroll so reload restores position
+const hashObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      history.replaceState(null, '', '#' + entry.target.id);
+    }
+  });
+}, { root: mainEl, rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => hashObserver.observe(s));
+
+// On load, scroll to hash if present
+if (location.hash) {
+  const target = document.querySelector(location.hash);
+  if (target) setTimeout(() => target.scrollIntoView(), 50);
+}
+</script>
+
+</body>
+</html>
