@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Layout Mockups</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242836;
+    --border: #2e3345;
+    --text: #e2e4ea;
+    --text-dim: #8b90a0;
+    --accent: #4f8cff;
+    --green: #34d399;
+    --red: #ef4444;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 48px 80px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    margin-bottom: 40px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: #fff; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 64px 0;
+  }
+
+  /* ===== OPTION 2: STACKED BLOCKS ===== */
+  .block {
+    display: flex;
+    gap: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--red);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin: 16px 0;
+  }
+
+  .block.block-green { border-left-color: var(--green); }
+
+  .block-stat {
+    flex-shrink: 0;
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .block-stat .stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .block-stat .stat-label.red { color: var(--red); }
+  .block-stat .stat-label.green { color: var(--green); }
+
+  .block-stat .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  .block-body {
+    flex: 1;
+  }
+
+  .block-body h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .block-body p {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .block-body .ref {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  /* ===== OPTION 3: NARRATIVE WITH PULL-QUOTES ===== */
+  .narrative p {
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+
+  .pull-stat {
+    float: left;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1;
+    margin: 0 20px 8px 0;
+    color: #fff;
+  }
+
+  .pull-stat.red { color: var(--red); }
+  .pull-stat.green { color: var(--green); }
+
+  .narrative-block {
+    margin: 32px 0;
+    overflow: hidden;
+  }
+
+  .narrative-block::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  .narrative .ref {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .narrative-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== OPTION 2 ===== -->
+<h1>Option 2 — Stacked Blocks</h1>
+
+<h2>What Matters for Red Hat</h2>
+<p class="section-subtitle">Two things from KubeCon India 2026 that Red Hat teams should know about.</p>
+
+<div class="block">
+  <div class="block-stat">
+    <div class="stat-label red">Chainguard</div>
+    <div class="stat-value">MTTE<br>= −7 days</div>
+  </div>
+  <div class="block-body">
+    <h3>Vulnerabilities are exploited before patches ship</h3>
+    <p>Mean Time To Exploitation is now <em>negative</em>. Chainguard's <a href="https://github.com/driftlessaf/go-driftlessaf">DriftlessAF</a> framework fights back with Kubernetes-style reconciler bots: <strong>600+ PRs merged daily</strong>, <strong>2,960 CVEs remediated in a single month</strong>, zero human involvement. The "desired state = zero CVEs" reconciliation pattern is directly relevant to <strong>Project Lightwell</strong>.</p>
+    <div class="ref"><a href="https://www.chainguard.dev/unchained/driftlessaf-introducing-chainguard-factory-2-0">DriftlessAF Blog →</a> · <a href="https://github.com/driftlessaf/go-driftlessaf">GitHub →</a></div>
+  </div>
+</div>
+
+<div class="block block-green">
+  <div class="block-stat">
+    <div class="stat-label green">CAST AI</div>
+    <div class="stat-value">$200k<br>→ $20k</div>
+  </div>
+  <div class="block-body">
+    <h3>90% cost reduction by routing to open-source models</h3>
+    <p>AI coding costs are exploding. CAST AI solved it with <a href="https://github.com/getkimchi/kimchi">Kimchi</a> — routing 91.5% of agent work to open-source models at ~14x lower cost per token, reserving frontier models for the 7.7% that needs them. <strong>90% of their engineers adopted it.</strong> DevRel Kunal Das showed me the live internal dashboard at the booth — this is real adoption, not a pilot.</p>
+    <div class="ref"><a href="https://docs.kimchi.dev">Kimchi Docs →</a> · <a href="https://github.com/getkimchi/kimchi">GitHub →</a></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ===== OPTION 3 ===== -->
+<h1>Option 3 — Narrative with Pull-Stats</h1>
+
+<h2>What Matters for Red Hat</h2>
+<p class="section-subtitle">Two things from KubeCon India 2026 that Red Hat teams should know about.</p>
+
+<div class="narrative">
+
+  <div class="narrative-block">
+    <div class="pull-stat red">−7d</div>
+    <p><strong>Mean Time To Exploitation is now negative seven days.</strong> By the time a CVE is publicly disclosed, it has already been exploited. Chainguard's Dan Lorenc drove this home in his keynote — AI generates ~50x more code per sprint, and human reviewers cannot keep up with the patching load.</p>
+    <p>At the booth, their team showed me <a href="https://github.com/driftlessaf/go-driftlessaf">DriftlessAF</a> — the agentic reconciliation framework powering their Factory 2.0. Kubernetes-style reconciler bots continuously compare desired state ("zero CVEs") against actual state, merging <strong>600+ PRs daily</strong> with zero human involvement. In their biggest month, they remediated <strong>2,960 unique CVEs</strong>. The pattern is directly relevant to <strong>Project Lightwell</strong>.</p>
+    <p class="ref"><a href="https://www.chainguard.dev/unchained/driftlessaf-introducing-chainguard-factory-2-0">DriftlessAF Blog →</a> · <a href="https://github.com/driftlessaf/go-driftlessaf">GitHub →</a></p>
+  </div>
+
+  <hr class="narrative-divider">
+
+  <div class="narrative-block">
+    <div class="pull-stat green">90%</div>
+    <p><strong>CAST AI cut their monthly AI spend from $200k to $20k</strong> — a 90% cost reduction — by routing 91.5% of agent work to open-source models. Their tool <a href="https://github.com/getkimchi/kimchi">Kimchi</a> assigns roles to models: a planner, a builder, a reviewer, an explorer. Frontier models handle the 7.7% that needs them; everything else runs at ~14x lower cost per token.</p>
+    <p>DevRel Kunal Das showed me the live internal dashboard at the booth: <strong>90% of CAST AI's engineers have adopted Kimchi.</strong> This is real company-wide uptake, not a pilot.</p>
+    <p class="ref"><a href="https://docs.kimchi.dev">Kimchi Docs →</a> · <a href="https://github.com/getkimchi/kimchi">GitHub →</a></p>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigation Mockups</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242836;
+    --border: #2e3345;
+    --text: #e2e4ea;
+    --text-dim: #8b90a0;
+    --accent: #4f8cff;
+    --red: #ef4444;
+    --green: #34d399;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); }
+
+  /* TAB BAR */
+  .tab-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; gap: 0; background: var(--surface); border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    padding: 14px 24px; font-size: 13px; color: var(--text-dim); cursor: pointer;
+    border-bottom: 2px solid transparent; transition: all 0.2s;
+  }
+  .tab:hover { color: var(--text); background: var(--surface2); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .demo-container { margin-top: 50px; }
+
+  /* ===== SHARED SLIDE STYLES ===== */
+  .slide {
+    height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 48px 80px; max-width: 900px; margin: 0 auto;
+  }
+  .slide-content { max-width: 700px; }
+  .slide h2 { font-size: 28px; font-weight: 700; margin-bottom: 16px; }
+  .slide p { font-size: 16px; line-height: 1.7; margin-bottom: 12px; }
+  .slide .stat { font-size: 48px; font-weight: 800; margin-bottom: 8px; }
+  .slide .stat.red { color: var(--red); }
+  .slide .stat.green { color: var(--green); }
+  .slide .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+  .slide .label.red { color: var(--red); }
+  .slide .label.green { color: var(--green); }
+  .slide-num { position: fixed; bottom: 24px; right: 32px; font-size: 12px; color: var(--text-dim); z-index: 100; }
+
+  /* ===== OPTION 1: SCROLL SNAP ===== */
+  #opt1 .snap-container {
+    height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory;
+  }
+  #opt1 .slide { scroll-snap-align: start; }
+
+  /* ===== OPTION 2: PAGINATION ===== */
+  #opt2 .slide { display: none; }
+  #opt2 .slide.active { display: flex; }
+  #opt2 .nav-arrows {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 12px; z-index: 100;
+  }
+  #opt2 .nav-btn {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); padding: 10px 20px; font-size: 13px; cursor: pointer;
+    font-family: var(--font); transition: all 0.2s;
+  }
+  #opt2 .nav-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  #opt2 .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  #opt2 .nav-btn:disabled:hover { background: var(--surface2); color: var(--text); border-color: var(--border); }
+
+  /* ===== OPTION 3: FADE ===== */
+  #opt3 .slide {
+    display: none; opacity: 0; transition: opacity 0.4s ease;
+  }
+  #opt3 .slide.active { display: flex; opacity: 1; }
+  #opt3 .nav-arrows {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 12px; z-index: 100;
+  }
+  #opt3 .nav-btn {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); padding: 10px 20px; font-size: 13px; cursor: pointer;
+    font-family: var(--font); transition: all 0.2s;
+  }
+  #opt3 .nav-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  #opt3 .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  #opt3 .nav-btn:disabled:hover { background: var(--surface2); color: var(--text); border-color: var(--border); }
+  #opt3 .dots {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 100;
+  }
+
+  /* ===== OPTION 4: HORIZONTAL ===== */
+  #opt4 .horiz-container {
+    display: flex; height: 100vh; overflow-x: scroll; scroll-snap-type: x mandatory;
+  }
+  #opt4 .slide {
+    min-width: 100vw; scroll-snap-align: start; flex-shrink: 0;
+  }
+  #opt4 .scroll-hint {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    font-size: 12px; color: var(--text-dim); z-index: 100;
+  }
+
+  /* HIDE ALL OPTIONS BY DEFAULT */
+  .option { display: none; }
+  .option.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab active" onclick="showOption(1)">Option 1: Scroll Snap</div>
+  <div class="tab" onclick="showOption(2)">Option 2: Pagination</div>
+  <div class="tab" onclick="showOption(3)">Option 3: Fade</div>
+  <div class="tab" onclick="showOption(4)">Option 4: Horizontal</div>
+</div>
+
+<div class="demo-container">
+
+<!-- ===== OPTION 1: SCROLL SNAP ===== -->
+<div class="option active" id="opt1">
+  <div class="snap-container">
+    <div class="slide">
+      <div class="slide-content">
+        <div class="label red">Chainguard</div>
+        <div class="stat red">−7d</div>
+        <h2>Mean Time To Exploitation is now negative</h2>
+        <p>By the time a CVE is publicly disclosed, it has already been exploited. Chainguard's Dan Lorenc drove this home in his keynote.</p>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <div class="label green">CAST AI</div>
+        <div class="stat green">90%</div>
+        <h2>$200k to $20k per month</h2>
+        <p>CAST AI cut their monthly AI spend by 90% by routing 91.5% of agent work to open-source models. 90% of their engineers adopted it.</p>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <div class="label" style="color:var(--accent)">Shipwright Booth</div>
+        <div class="stat" style="color:var(--accent)">80</div>
+        <h2>Visitors in two hours</h2>
+        <p>We hosted the Shipwright table at the CNCF project pavilion. 25 badge contacts from BlackRock, JP Morgan, Nutanix, HSBC, Eli Lilly, and more.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">Scroll to navigate ↕</div>
+</div>
+
+<!-- ===== OPTION 2: PAGINATION ===== -->
+<div class="option" id="opt2">
+  <div class="slide active" data-idx="0">
+    <div class="slide-content">
+      <div class="label red">Chainguard</div>
+      <div class="stat red">−7d</div>
+      <h2>Mean Time To Exploitation is now negative</h2>
+      <p>By the time a CVE is publicly disclosed, it has already been exploited. Chainguard's Dan Lorenc drove this home in his keynote.</p>
+    </div>
+  </div>
+  <div class="slide" data-idx="1">
+    <div class="slide-content">
+      <div class="label green">CAST AI</div>
+      <div class="stat green">90%</div>
+      <h2>$200k to $20k per month</h2>
+      <p>CAST AI cut their monthly AI spend by 90% by routing 91.5% of agent work to open-source models. 90% of their engineers adopted it.</p>
+    </div>
+  </div>
+  <div class="slide" data-idx="2">
+    <div class="slide-content">
+      <div class="label" style="color:var(--accent)">Shipwright Booth</div>
+      <div class="stat" style="color:var(--accent)">80</div>
+      <h2>Visitors in two hours</h2>
+      <p>We hosted the Shipwright table at the CNCF project pavilion. 25 badge contacts from BlackRock, JP Morgan, Nutanix, HSBC, Eli Lilly, and more.</p>
+    </div>
+  </div>
+  <div class="nav-arrows">
+    <button class="nav-btn" id="opt2-prev" onclick="paginate('opt2', -1)">← Previous</button>
+    <span class="slide-num" id="opt2-counter" style="position:static; display:flex; align-items:center; padding:0 12px;">1 / 3</span>
+    <button class="nav-btn" id="opt2-next" onclick="paginate('opt2', 1)">Next →</button>
+  </div>
+</div>
+
+<!-- ===== OPTION 3: FADE ===== -->
+<div class="option" id="opt3">
+  <div class="slide active" data-idx="0">
+    <div class="slide-content">
+      <div class="label red">Chainguard</div>
+      <div class="stat red">−7d</div>
+      <h2>Mean Time To Exploitation is now negative</h2>
+      <p>By the time a CVE is publicly disclosed, it has already been exploited. Chainguard's Dan Lorenc drove this home in his keynote.</p>
+    </div>
+  </div>
+  <div class="slide" data-idx="1">
+    <div class="slide-content">
+      <div class="label green">CAST AI</div>
+      <div class="stat green">90%</div>
+      <h2>$200k to $20k per month</h2>
+      <p>CAST AI cut their monthly AI spend by 90% by routing 91.5% of agent work to open-source models. 90% of their engineers adopted it.</p>
+    </div>
+  </div>
+  <div class="slide" data-idx="2">
+    <div class="slide-content">
+      <div class="label" style="color:var(--accent)">Shipwright Booth</div>
+      <div class="stat" style="color:var(--accent)">80</div>
+      <h2>Visitors in two hours</h2>
+      <p>We hosted the Shipwright table at the CNCF project pavilion. 25 badge contacts from BlackRock, JP Morgan, Nutanix, HSBC, Eli Lilly, and more.</p>
+    </div>
+  </div>
+  <div class="nav-arrows">
+    <button class="nav-btn" id="opt3-prev" onclick="paginate('opt3', -1)">← Previous</button>
+    <span class="slide-num" id="opt3-counter" style="position:static; display:flex; align-items:center; padding:0 12px;">1 / 3</span>
+    <button class="nav-btn" id="opt3-next" onclick="paginate('opt3', 1)">Next →</button>
+  </div>
+</div>
+
+<!-- ===== OPTION 4: HORIZONTAL ===== -->
+<div class="option" id="opt4">
+  <div class="horiz-container">
+    <div class="slide">
+      <div class="slide-content">
+        <div class="label red">Chainguard</div>
+        <div class="stat red">−7d</div>
+        <h2>Mean Time To Exploitation is now negative</h2>
+        <p>By the time a CVE is publicly disclosed, it has already been exploited. Chainguard's Dan Lorenc drove this home in his keynote.</p>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <div class="label green">CAST AI</div>
+        <div class="stat green">90%</div>
+        <h2>$200k to $20k per month</h2>
+        <p>CAST AI cut their monthly AI spend by 90% by routing 91.5% of agent work to open-source models. 90% of their engineers adopted it.</p>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <div class="label" style="color:var(--accent)">Shipwright Booth</div>
+        <div class="stat" style="color:var(--accent)">80</div>
+        <h2>Visitors in two hours</h2>
+        <p>We hosted the Shipwright table at the CNCF project pavilion. 25 badge contacts from BlackRock, JP Morgan, Nutanix, HSBC, Eli Lilly, and more.</p>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">Swipe or scroll horizontally →</div>
+</div>
+
+</div>
+
+<script>
+function showOption(n) {
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('opt' + n).classList.add('active');
+  document.querySelectorAll('.tab')[n - 1].classList.add('active');
+}
+
+const state = { opt2: 0, opt3: 0 };
+
+function paginate(optId, dir) {
+  const container = document.getElementById(optId);
+  const slides = container.querySelectorAll('.slide');
+  const total = slides.length;
+
+  slides[state[optId]].classList.remove('active');
+  state[optId] = Math.max(0, Math.min(total - 1, state[optId] + dir));
+  slides[state[optId]].classList.add('active');
+
+  document.getElementById(optId + '-counter').textContent = (state[optId] + 1) + ' / ' + total;
+  document.getElementById(optId + '-prev').disabled = state[optId] === 0;
+  document.getElementById(optId + '-next').disabled = state[optId] === total - 1;
+}
+
+document.addEventListener('keydown', e => {
+  const activeOpt = document.querySelector('.option.active');
+  if (!activeOpt) return;
+  const id = activeOpt.id;
+  if (id === 'opt2' || id === 'opt3') {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') paginate(id, 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') paginate(id, -1);
+  }
+});
+</script>
+
+</body>
+</html>
