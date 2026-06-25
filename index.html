@@ -381,6 +381,11 @@
     <a class="nav-link" target="_self" href="#buildpacks">Buildpacks & Jib</a>
     <a class="nav-link" target="_self" href="#other">Other Sessions</a>
   </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Takeaways</div>
+    <a class="nav-link" target="_self" href="#takeaways">Learnings &amp; Action Items</a>
+  </div>
 </nav>
 
 <!-- MAIN CONTENT -->
@@ -442,10 +447,10 @@
 
   <p>BlackRock, JP Morgan Chase, Nutanix, HSBC, Eli Lilly, MassMutual, SLB, Carl Zeiss, CoverGo, and others, a strong mix of financial services, enterprise, and infrastructure companies. Several visitors expressed interest in contributing to Shipwright. We should follow up and onboard a couple of new contributors from this list.</p>
 
-  <!-- PHOTO PLACEHOLDER -->
-  <div style="background:var(--surface2); border:1px dashed var(--border); border-radius:10px; padding:48px 20px; text-align:center; margin-top:24px; color:var(--text-dim); font-size:14px;">
-    📷 Photo: Sayan &amp; Prateek at the Shipwright booth, coming soon
-  </div>
+  <figure style="margin-top:24px; text-align:center;">
+    <img src="shipwright-booth.jpeg" alt="Sayan and Prateek at the Shipwright booth at KubeCon India 2026" style="width:100%; max-width:720px; border-radius:10px;">
+    <figcaption style="margin-top:8px; color:var(--text-dim); font-size:14px;">Sayan &amp; Prateek at the Shipwright booth, CNCF Project Pavilion</figcaption>
+  </figure>
 </div>
 
 <hr class="divider">
@@ -547,6 +552,35 @@ OS    (8e3e01b2)  →  OS (679b84b)   [only this layer changes]</code></pre>
 
   <h3>Harbor + Velero: AI Model Management (Broadcom)</h3>
   <p>Harbor 2.13 works as an OCI-native model registry. One registry for containers, Helm charts, and AI models. The key insight: the inference image never changes, only the OCI tag does. Swap the model without rebuilding the serving container.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ====== TAKEAWAYS ====== -->
+<div class="section" id="takeaways">
+  <h2>Learnings &amp; Action Items <span class="tag tag-booth">Takeaways</span></h2>
+
+  <h3>Shipwright Learnings</h3>
+
+  <ol>
+    <li><strong>The #1 question is still "What is Shipwright?"</strong> — Most visitors had never heard of it. The pitch that worked best was the <em>evolution story</em>: Docker's daemon problem &rarr; Kaniko/Buildah &rarr; Dockerfile rigidity &rarr; Buildpacks/ko &rarr; Shipwright unifying all of them under one Kubernetes-native API.</li>
+    <li><strong>The Buildah live demo was the "aha" moment.</strong> Showing how a single Build YAML decouples <em>what</em> to build from <em>how</em> &mdash; swap the BuildStrategy reference and the same source builds with a different tool.</li>
+    <li><strong>Cross-session knowledge deepened the pitch.</strong> Attending the Buildpacks and Jib talks beforehand enabled richer conversations: <em>"Shipwright doesn't replace those tools &mdash; it gives your platform team a single API to offer all of them."</em> That framing landed especially well with platform engineers.</li>
+    <li><strong>The Buildpacks O(1) rebase story is directly applicable.</strong> Shipwright already builds without a Dockerfile via BuildStrategy &mdash; the open question is whether we can offer the same <code>pack rebase</code> O(1) patching story, and how that connects to Lightwell's CVE remediation pipeline.</li>
+    <li><strong>The Sysdig 15%/85% stat is a powerful talking point</strong> for advocating minimal runtime images in Shipwright build strategies &mdash; only 15% of High/Critical vulns are in packages actually loaded at runtime.</li>
+    <li><strong>Strong enterprise interest.</strong> 80 visitors, 25 badge contacts from BlackRock, JP Morgan Chase, Nutanix, HSBC, Eli Lilly, MassMutual, SLB, Carl Zeiss, CoverGo &mdash; financial services and infrastructure companies are the sweet spot.</li>
+  </ol>
+
+  <h3>Action Items</h3>
+
+  <ol>
+    <li><strong>Follow up on booth contacts and onboard new contributors.</strong> Several visitors expressed interest in contributing to Shipwright &mdash; follow up and convert a couple into active contributors.</li>
+    <li><strong>Investigate O(1) rebase for Shipwright.</strong> Evaluate whether Shipwright can offer Buildpacks-style <code>pack rebase</code> O(1) patching and how that integrates with Lightwell's remediation pipeline.</li>
+    <li><strong>Evaluate Chainguard's DriftlessAF pattern for Lightwell.</strong> The reconciliation loop ("desired state = zero CVEs" &rarr; auto-fix PR &rarr; auto-merge on green CI) is a concrete architecture reference for Lightwell's remediation pipeline.</li>
+    <li><strong>Study Chainguard's skills registry model for OpenShift Builds agent skills.</strong> Versioned, pinnable, diffable skills as OCI-like artifacts &mdash; a pattern to move away from skills scattered across repos and local setups.</li>
+    <li><strong>Evaluate CAST AI's Kimchi for cost optimization.</strong> The routing-by-role model (planner, builder, reviewer, explorer across different models) and the 14x cost differential between frontier and OSS models are worth studying as we scale agent usage across the team.</li>
+    <li><strong>Add QR code linking to GitHub on future booth handouts.</strong></li>
+  </ol>
 </div>
 
 </main>
